@@ -1,0 +1,5 @@
+func: function integer (n: integer) {
+            00aa = b[1];
+            x: integer = 12.1;
+            b = 0a12;
+            }
