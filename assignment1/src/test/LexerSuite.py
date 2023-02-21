@@ -35,19 +35,38 @@ class LexerSuite(unittest.TestCase):
     #     self.assertTrue(TestLexer.test(input, expect, 105))
     
     
-    # def test_3case_identifier(self):
-    #     """test stringlit 4"""
-    #     input='"Oi con song que -> in english: \\"Oh my gosh, so shy\""'
-    #     expect = "He asked me: \"Where is John?\",<EOF>"
-    #     self.assertTrue(TestLexer.test(input, expect, 106))
-        
     def test_3case_identifier(self):
-        """test intlit 1"""
-        input="""func: function integer (n: integer) {
-            00aa = b[1];
-            x: integer = 12.1;
-            b = 0a12;
-            }"""
-        expect = ""
+        """test stringlit 4"""
+        input='"Oi con song que -> in english: \\"Oh my gosh, so shy\""'
+        expect = "He asked me: \"Where is John?\",<EOF>"
         self.assertTrue(TestLexer.test(input, expect, 106))
+        
+    # def test_3case_identifier(self):
+    #     """test intlit 1"""
+    #     input="""func: function integer (n: integer) {
+    #         00aa = b[1];
+    #         x: integer = 12.1;
+    #         b = 0a12;
+    #         }"""
+    #     expect = ""
+    #     self.assertTrue(TestLexer.test(input, expect, 106))
+    
+    def test_lowercase_identifier(self):
+        """test identifiers"""
+        input="12."
+        expect= '12.,<EOF>'
+        self.assertTrue(TestLexer.test(input, expect, 107))
+        
+    def test_lowercase_identifier(self):
+        """test identifiers"""
+        input = '"helllo \\m"'
+
+        expect= 'Illegal Escape In String: helllo \m'
+        self.assertTrue(TestLexer.test(input, expect, 108))
+        
+    def test_lowercase_identifier(self):
+        """test identifiers"""
+        input='"\\''\\''\\\'''\\\'"'
+        expect= 'Illegal Escape In String: helllo \m'
+        self.assertTrue(TestLexer.test(input, expect, 109))
         

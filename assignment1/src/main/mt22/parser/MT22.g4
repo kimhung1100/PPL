@@ -85,7 +85,7 @@ operands: ID
 		| INTLIT 
 		| FLOATLIT 
 		| BOOLEANLIT 
-		| STRINGLIT 
+		// | STRINGLIT 
 		| arraylit                           // bug arraylit
 		| LB exp RB
 		| function_call;
@@ -263,7 +263,7 @@ FLOATLIT : (INTEGERPART DECIMALPART
 		| INTEGERPART DECIMALPART? EXPONENTPART) 
 		{self.text = self.text.replace("_", "")};     // action block must write here
 fragment INTEGERPART : INTLIT;
-fragment DECIMALPART : DOT DIGIT+;
+fragment DECIMALPART : DOT DIGIT*;
 fragment EXPONENTPART : ('e' | 'E') ('-' | '+')? DIGIT+;
 
 // 3. Boolean literal rule
@@ -284,6 +284,18 @@ fragment ESC_ILLEGAL: '\\' ~[bfrnt"\\];
 // 5. Array literal rule
 arraylit: LP exp_list_array RP;   
 
+
+
+UNCLOSE_STRING:
+	'"' (STRING_CHAR)* ([\f\t\b\n\r] | EOF | '\\') {
+                        if self.text[-1] in ["\n","\r","\b","\t","\f"] :
+                            raise UncloseString(self.text[1:-1])
+                        else: raise UncloseString(self.text[1:])
+                    };
+ILLEGAL_ESCAPE:
+	'"' STRING_CHAR* ESC_ILLEGAL {
+                        raise IllegalEscape(self.text[1:])
+                    };
 // 3.2 PROGRAM COMMENTS
 //_____________________________________________________________
 LINE_CMT: '//' ~[\n\r]* -> skip;
@@ -292,11 +304,4 @@ BLOCK_CMT: '/*' .*? '*/' -> skip;
 // 3.2 CHARACTER SET
 WS: [ \t\r\n\f\b]+ -> skip; // skip spaces, tabs, newlines
 
-
 ERROR_CHAR: . {raise ErrorToken(self.text)};
-UNCLOSE_STRING: '"' STRING_CHAR* {
-	raise UncloseString(self.text.substring(1))
-};
-ILLEGAL_ESCAPE: '"' STRING_CHAR* ESC_ILLEGAL{
-	raise IllegalEscape(self.text.substring(1))
-};
