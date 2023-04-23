@@ -1,0 +1,8 @@
+
+        foo: function integer (a: integer) {
+            z: integer = 1 + bar(1);
+        }
+        bar: function integer (a: integer, b: float) {
+            a = a;
+        }
+        

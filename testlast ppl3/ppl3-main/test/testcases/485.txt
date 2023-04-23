@@ -1,0 +1,10 @@
+
+        main: function void() {
+            
+        }
+        foo: function auto (x: integer, y: float){
+            printFloat(main());
+        }
+        
+        
+        
